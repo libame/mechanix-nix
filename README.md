@@ -1,4 +1,20 @@
 # Nix stuff for Mechanix OS
+## Index
+- [Contents](#contents)
+- [How to use](#how-to-use)
+- [Use through fetchgit](#use-through-fetchgit)
+## Contents
+This repo currently contains the following packages:
+### Services
+- `system-dbus-server`
+- `desktop-dbus-server`
+### Shell
+- `launcher`
+- `keyboard`
+### Apps
+- `settings`
+- `files`
+- `camera`
 ## How to use
 Add the repo as a channel:
 ```bash
@@ -24,6 +40,10 @@ in
 	];
 }
 ```
+You can customize the packages' settings like this:
+```nix
+(import <mechanix-nix> {}).launcher.withSettings { modules.clock.time = "%I:%M %p"; }
+```
 By default, the `files` app attempts to open the directory `/home/mecha` when started.\
 You can change the startup directory like this:
 ```nix
@@ -35,8 +55,8 @@ You may also use this without adding a channel, using fetchgit or fetchFromGitHu
 let
 	mechanix-nix-repo = pkgs.fetchgit {
 		url = "https://github.com/libame/mechanix-nix.git";
-		rev = "6d0e75840d480050069bef0e061ac743e92c8c28";
-		sha256 = "fF8350rKeg9yn0375BcSdeoPUNYUXuZVFAI0qt73Smk=";
+		rev = "4c3f579d6ea5c2ea1c66d6033f40b6cd097d0080";
+		sha256 = "s0FtuiQwf57KMO62ucsX25l1r4CiWC7urBeNEDynqww=";
 	};
 	mechanix-nix = import mechanix-nix-repo {};
 in
@@ -48,8 +68,8 @@ You would put it in your system config like this:
 let
 	mechanix-nix-repo = pkgs.fetchgit {
 		url = "https://github.com/libame/mechanix-nix.git";
-		rev = "6d0e75840d480050069bef0e061ac743e92c8c28";
-		sha256 = "fF8350rKeg9yn0375BcSdeoPUNYUXuZVFAI0qt73Smk=";
+		rev = "4c3f579d6ea5c2ea1c66d6033f40b6cd097d0080";
+		sha256 = "s0FtuiQwf57KMO62ucsX25l1r4CiWC7urBeNEDynqww=";
 	};
 	mechanix-nix = import mechanix-nix-repo {};
 in
