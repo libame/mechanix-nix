@@ -11,6 +11,31 @@ let
 	wrap = import ./wrap.nix pkgs;
 in
 rec {
+	services-unwrapped = pkgs.callPackage ./services { inherit mechanixGuiSrc; };
+	system-dbus-server = wrap {
+		name = "mechanix_system_dbus_server";
+		package = services-unwrapped;
+		settings = import services/settings-system-dbus-server.nix;
+		settingsEnvVar = "MECHA_SERVICES_CONFIG_PATH";
+	};
+	desktop-dbus-server = wrap {
+		name = "mechanix_desktop_dbus_server";
+		package = services-unwrapped;
+		settings = import services/settings-desktop-dbus-server.nix;
+		settingsEnvVar = "MECHANIX_DESKTOP_SERVER_SETTINGS_PATH";
+	};
+	shell-unwrapped = pkgs.callPackage ./shell { inherit mechanixGuiSrc; };
+	launcher = wrap {
+		name = "mechanix-launcher";
+		package = shell-unwrapped;
+		settings = import shell/settings-launcher.nix mechanixGuiSrc;
+	};
+	keyboard = wrap {
+		name = "mechanix-keyboard";
+		package = shell-unwrapped;
+		settings = import shell/settings-keyboard.nix mechanixGuiSrc;
+		settingsEnvVar = "MECHANIX_KEYBOARD_SETTINGS_PATH";
+	};
 	settings-unwrapped = pkgs.callPackage apps/settings { inherit mechanixGuiSrc; };
 	settings = wrap {
 		name = "mechanix-settings";
